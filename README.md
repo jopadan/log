@@ -2,4 +2,9 @@
 Simple C logging framework for platform independent demos and games
 
 ## Usage
-include "log.h"
+
+Run `cmake --install-prefix=/usr && make install` to build and install
+
+Investigate the hello.c example and log.h
+
+Run `gcc <file.c> `pkg-config --cflags --libs` -o file` to compile your project

@@ -8,12 +8,10 @@ set(CMAKE_C_STANDARD_LIBRARIES_INIT "-lgcc -lc -lm ${CMAKE_DL_LIBS} -lpthread")
 include(GNUInstallDirs)
 include(FindPkgConfig)
 
-set(SOURCE_FILES
-	log.c
-)
-set(INCLUDE_FILES
-	log.h
-)
+set( SOURCE_FILES log.c )
+set( INCLUDE_FILES log.h )
+set( EXAMPLE_SOURCE_FILES hello.c )
+
 add_library( ${PROJECT_NAME} SHARED ${SOURCE_FILES} ${INCLUDE_FILES} )
 target_link_libraries( ${PROJECT_NAME} ${CMAKE_C_STANDARD_LIBRARIES} )
 target_include_directories(${PROJECT_NAME} PUBLIC
@@ -29,6 +27,12 @@ set(install_includedir "${CMAKE_INSTALL_INCLUDEDIR}")
 configure_file(${PROJECT_NAME}.pc.in ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.pc @ONLY)
 
 set(ENV{PKG_CONFIG_PATH} "${PROJECT_BINARY_DIR}:$ENV{PKG_CONFIG_PATH}")
+
+add_executable( hello ${EXAMPLE_SOURCE_FILES} )
+target_link_libraries( hello PRIVATE ${PROJECT_NAME} )
+set_target_properties( hello PROPERTIES RUNTIME_OUTPUT_DIRECTORY
+	${CMAKE_BINARY_DIR} )
+add_test(hello hello)
 
 install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}Config
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT binaries
