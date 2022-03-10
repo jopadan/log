@@ -1,2 +1,5 @@
 # log
-Simple demo/game framework logging system in C
+Simple C logging framework for platform independent demos and games
+
+## Usage
+include "log.h"
