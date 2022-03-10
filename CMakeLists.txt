@@ -3,7 +3,7 @@ project(log LANGUAGES C)
 
 set(PROJECT_VERSION 1.0)
 set(PROJECT_DESCRIPTION "Simple C logging framework for platform independent demos and games")
-set(CMAKE_C_STANDARD_LIBRARIES_INIT "-lgcc -lc -lm -ldl -lpthread") 
+set(CMAKE_C_STANDARD_LIBRARIES_INIT "-lgcc -lc -lm ${CMAKE_DL_LIBS} -lpthread") 
 
 include(GNUInstallDirs)
 include(FindPkgConfig)
@@ -15,7 +15,7 @@ set(INCLUDE_FILES
 	log.h
 )
 add_library( ${PROJECT_NAME} SHARED ${SOURCE_FILES} ${INCLUDE_FILES} )
-target_link_libraries( ${PROJECT_NAME} ${CMAKE_DL_LIBS} ${CMAKE_C_STANDARD_LIBRARIES} )
+target_link_libraries( ${PROJECT_NAME} ${CMAKE_C_STANDARD_LIBRARIES} )
 target_include_directories(${PROJECT_NAME} PUBLIC
 			$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
 			$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}> )
