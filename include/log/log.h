@@ -10,7 +10,6 @@
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
-#include <sys/param.h>
 
 #ifndef log_tty
 #define log_tty stderr
@@ -24,7 +23,7 @@ FILE* log_file = NULL;
 
 extern inline char* log_getopt_ith(int argc, char** argv, int i)
 {
-	static char src[PATH_MAX] = { '\0' };
+	static char src[FILENAME_MAX] = { '\0' };
 	return argc == 1 ? strcat(strcpy(src, argv[0]), ".log") : strcpy(src, argv[i]);
 }
 
