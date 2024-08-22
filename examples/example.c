@@ -1,17 +1,3 @@
-# log
-
-log - a minimalist single-header logging system library in C
-
-## Usage
-
-### Build
-Run `cmake --install-prefix=/usr . && make install` to build and install
-
-### Code
-
-Investigate the `examples/example.c` example and `log.h`
-
-```c
 /* set log length and sink */
 #define log_len 512
 #define log_tty stdout
@@ -45,4 +31,3 @@ int main(int argc, char** argv)
 
 	exit(EXIT_SUCCESS);
 }
-```
