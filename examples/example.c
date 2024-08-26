@@ -13,7 +13,9 @@ int main(int argc, char** argv)
 	log_timestamp = false;
 
 	/* queue test log messages */
-	log_queue("ERR", "prefixed output!");
+	for(size_t i = 0; i < 7; i++)
+		log_queue(log_level(i), "prefixed output!");
+		
 	log_queue(NULL, "none prefixed output!");
 
 	/* set tty sink from stderr default to stdout */
@@ -24,7 +26,8 @@ int main(int argc, char** argv)
 	log_timestamp = true;
 
 	/* queue test log messages */
-	log_queue("ERR", "timestamped prefixed output!");
+	for(size_t i = 0; i < 7; i++)
+		log_queue(log_level(i), "timestamped prefixed output!");
 
 	/* queue last test log message and flush sinks */
 	log_flush(log_queue(NULL, "none prefixed timestamped output!"));

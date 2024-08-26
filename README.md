@@ -19,30 +19,33 @@ Investigate the `examples/example.c` example and `log.h`
 
 int main(int argc, char** argv)
 {
-	/* use default/optional log_file and close it at exit */
-	log_file = fopen(log_getopt_ith(argc, argv, 1), "w");
-	atexit(log_close);
+        /* use default/optional log_file and close it at exit */
+        log_file = fopen(log_getopt_ith(argc, argv, 1), "w");
+        atexit(log_close);
 
-	/* disable timestamping */
-	log_timestamp = false;
+        /* disable timestamping */
+        log_timestamp = false;
 
-	/* queue test log messages */
-	log_queue("ERR", "prefixed output!");
-	log_queue(NULL, "none prefixed output!");
+        /* queue test log messages */
+        for(size_t i = 0; i < 7; i++)
+                log_queue(log_level(i), "prefixed output!");
 
-	/* set tty sink from stderr default to stdout */
-	#undef log_tty
-	#define log_tty stderr
+        log_queue(NULL, "none prefixed output!");
 
-	/* enable timestamping */
-	log_timestamp = true;
+        /* set tty sink from stderr default to stdout */
+        #undef log_tty
+        #define log_tty stderr
 
-	/* queue test log messages */
-	log_queue("ERR", "timestamped prefixed output!");
+        /* enable timestamping */
+        log_timestamp = true;
 
-	/* queue last test log message and flush sinks */
-	log_flush(log_queue(NULL, "none prefixed timestamped output!"));
+        /* queue test log messages */
+        for(size_t i = 0; i < 7; i++)
+                log_queue(log_level(i), "timestamped prefixed output!");
 
-	exit(EXIT_SUCCESS);
+        /* queue last test log message and flush sinks */
+        log_flush(log_queue(NULL, "none prefixed timestamped output!"));
+
+        exit(EXIT_SUCCESS);
 }
 ```
