@@ -1,6 +1,6 @@
 # log
 
-log - a minimalist single-header logging system library in C
+Minimalist single-header logging system library in C
 
 ## Usage
 
