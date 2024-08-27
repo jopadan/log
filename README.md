@@ -1,6 +1,6 @@
 # log
 
-Minimalist single-header logging system library in C
+Minimalistic single-header logging framework library in C 
 
 ![](./examples/example.svg)
 
