@@ -2,7 +2,7 @@
 
 Minimalist single-header logging system library in C
 
-![](./example.svg)
+![](./examples/example.svg)
 
 ## Usage
 
