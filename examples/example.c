@@ -1,5 +1,5 @@
 /* set log length and sink */
-#define log_len 512
+#define log_len 2048
 #define log_tty stdout
 #include <log/log.h>
 

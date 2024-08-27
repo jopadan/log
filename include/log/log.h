@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
+#include <sys/param.h>
 
 enum log_lvl
 {
@@ -43,8 +44,9 @@ typedef vec4ub rgba8888;
 #ifndef log_tty
 #define log_tty stderr
 #endif
+#define log_len_min 2048
 #ifndef log_len
-#define log_len 2048
+#define log_len log_len_min
 #endif
 
 bool  log_timestamp = true;
@@ -84,8 +86,10 @@ extern inline char* log_color_rgba(rgba8888 fg, rgba8888 bg, const char* msg)
 /* log level prefix generation */
 extern inline const char* log_level(enum log_lvl lvl)
 {
-	return log_colored ? log_color(0, log_level_color[lvl], LOG_COLOR_DEFAULT, log_level_string[lvl])
-	                   : log_level_string[lvl];
+	static char* dst = NULL;
+	if(asprintf(&dst, "[%s] ", log_colored ? log_color(0, log_level_color[lvl], LOG_COLOR_DEFAULT, log_level_string[lvl]) : log_level_string[lvl]) == -1)
+		dst = NULL;
+	return dst;
 }
 
 /* log filename string determination using arguments */
@@ -123,26 +127,25 @@ extern inline char* log_flush(char* buf)
 /* queue log non/prefixed entries  */
 extern inline char* log_queue(const char* pre, const char* msg)
 {
-	static char buf[log_len] = {'\0'};
+	static char buf[MAX(log_len, log_len_min)] = {'\0'};
 
 	if(msg != NULL)
 	{
 		if(pre != NULL)
-		{
 			strcat(buf, pre);
-			strcat(buf, " ");
-		}
 
 		if(log_timestamp)
 		{
 			time_t t = time(NULL);
-			char* tme = ctime(&t);
+			struct tm* tm = localtime(&t);
+			char tme[32];
+			strftime(tme, sizeof(tme), "%X0", tm);
 			tme[strlen(tme) - 1] = ' ';
 			const char* color = log_colored ? log_color(0, log_timestamp_color, 9, tme) : tme;
 			strcat(buf, color);
 		}
 
-		if(strlen(buf) + strlen(msg) + 2 >= log_len)
+		if(strlen(buf) + strlen(msg) + 2 >= MAX(log_len, log_len_min))
 			log_flush(buf);
 
 		strcat(buf, msg);
