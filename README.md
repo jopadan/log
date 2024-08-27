@@ -2,24 +2,8 @@
 
 Minimalist single-header logging system library in C
 
-```sh
-[^[[0;32;49mNFO^[[0m] prefixed output!
-[^[[0;33;49mWRN^[[0m] prefixed output!
-[^[[0;34;49mTRC^[[0m] prefixed output!
-[^[[0;31;49mERR^[[0m] prefixed output!
-[^[[0;31;49mDBG^[[0m] prefixed output!
-[^[[0;31;49mFTL^[[0m] prefixed output!
-[^[[0;35;49mSYS^[[0m] prefixed output!
-none prefixed output!
-[^[[0;32;49mNFO^[[0m] ^[[0;34;49m17:51:57 ^[[0mtimestamped prefixed output!
-[^[[0;33;49mWRN^[[0m] ^[[0;34;49m17:51:57 ^[[0mtimestamped prefixed output!
-[^[[0;34;49mTRC^[[0m] ^[[0;34;49m17:51:57 ^[[0mtimestamped prefixed output!
-[^[[0;31;49mERR^[[0m] ^[[0;34;49m17:51:57 ^[[0mtimestamped prefixed output!
-[^[[0;31;49mDBG^[[0m] ^[[0;34;49m17:51:57 ^[[0mtimestamped prefixed output!
-[^[[0;31;49mFTL^[[0m] ^[[0;34;49m17:51:57 ^[[0mtimestamped prefixed output!
-[^[[0;35;49mSYS^[[0m] ^[[0;34;49m17:51:57 ^[[0mtimestamped prefixed output!
-^[[0;34;49m17:51:57 ^[[0mnone prefixed timestamped output!
-```
+![](./example.svg)
+
 ## Usage
 
 ### Build
