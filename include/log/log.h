@@ -125,7 +125,7 @@ extern inline char* log_flush(char* buf)
 }
 
 /* queue log non/prefixed entries  */
-extern inline char* log_queue(const char* pre, const char* msg)
+extern inline char* log_queue(const char* pre, const char* time_format, const char* msg)
 {
 	static char buf[MAX(log_len, log_len_min)] = {'\0'};
 
@@ -134,12 +134,12 @@ extern inline char* log_queue(const char* pre, const char* msg)
 		if(pre != NULL)
 			strcat(buf, pre);
 
-		if(log_timestamp)
+		if(log_timestamp && time_format != NULL)
 		{
 			time_t t = time(NULL);
 			struct tm* tm = localtime(&t);
 			char tme[32];
-			strftime(tme, sizeof(tme), "%X0", tm);
+			strftime(tme, sizeof(tme), time_format, tm);
 			tme[strlen(tme) - 1] = ' ';
 			const char* color = log_colored ? log_color(0, log_timestamp_color, 9, tme) : tme;
 			strcat(buf, color);

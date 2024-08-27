@@ -14,9 +14,9 @@ int main(int argc, char** argv)
 
 	/* queue test log messages */
 	for(size_t i = 0; i < 7; i++)
-		log_queue(log_level(i), "prefixed output!");
+		log_queue(log_level(i), NULL, "prefixed output!");
 		
-	log_queue(NULL, "none prefixed output!");
+	log_queue(NULL, NULL, "none prefixed output!");
 
 	/* set tty sink from stderr default to stdout */
 	#undef log_tty
@@ -27,10 +27,10 @@ int main(int argc, char** argv)
 
 	/* queue test log messages */
 	for(size_t i = 0; i < 7; i++)
-		log_queue(log_level(i), "timestamped prefixed output!");
+		log_queue(log_level(i), "%X0", "timestamped prefixed output!");
 
 	/* queue last test log message and flush sinks */
-	log_flush(log_queue(NULL, "none prefixed timestamped output!"));
+	log_flush(log_queue(NULL, NULL, "none prefixed timestamped output!"));
 
 	exit(EXIT_SUCCESS);
 }
