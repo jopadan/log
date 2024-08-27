@@ -1,0 +1,44 @@
+<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+<foreignObject width="100%" height="100%">
+<div xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<style type="text/css">
+.ansi2html-content { display: inline; white-space: pre-wrap; word-wrap: break-word; }
+.body_foreground { color: #AAAAAA; }
+.body_background { background-color: #000000; }
+.inv_foreground { color: #000000; }
+.inv_background { background-color: #AAAAAA; }
+.ansi31 { color: #aa0000; }
+.ansi32 { color: #00aa00; }
+.ansi33 { color: #aa5500; }
+.ansi34 { color: #0000aa; }
+.ansi35 { color: #E850A8; }
+</style>
+</meta>
+</head>
+<body class="body_foreground body_background" style="font-size: normal;" >
+<pre class="ansi2html-content">
+[<span class="ansi32">NFO</span>] prefixed output!
+[<span class="ansi33">WRN</span>] prefixed output!
+[<span class="ansi34">TRC</span>] prefixed output!
+[<span class="ansi31">ERR</span>] prefixed output!
+[<span class="ansi31">DBG</span>] prefixed output!
+[<span class="ansi31">FTL</span>] prefixed output!
+[<span class="ansi35">SYS</span>] prefixed output!
+none prefixed output!
+[<span class="ansi32">NFO</span>] <span class="ansi34">18:38:08 </span>timestamped prefixed output!
+[<span class="ansi33">WRN</span>] <span class="ansi34">18:38:08 </span>timestamped prefixed output!
+[<span class="ansi34">TRC</span>] <span class="ansi34">18:38:08 </span>timestamped prefixed output!
+[<span class="ansi31">ERR</span>] <span class="ansi34">18:38:08 </span>timestamped prefixed output!
+[<span class="ansi31">DBG</span>] <span class="ansi34">18:38:08 </span>timestamped prefixed output!
+[<span class="ansi31">FTL</span>] <span class="ansi34">18:38:08 </span>timestamped prefixed output!
+[<span class="ansi35">SYS</span>] <span class="ansi34">18:38:08 </span>timestamped prefixed output!
+<span class="ansi34">18:38:08 </span>none prefixed timestamped output!
+
+</pre>
+</body>
+</div>
+</foreignObject>
+</svg>
