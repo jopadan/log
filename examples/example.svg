@@ -19,6 +19,7 @@
 </head>
 <body class="body_foreground body_background" style="font-size: normal;" >
 <pre class="ansi2html-content">
+none prefixed output!
 [<span class="ansi32">NFO</span>] prefixed output!
 [<span class="ansi33">WRN</span>] prefixed output!
 [<span class="ansi34">TRC</span>] prefixed output!
@@ -26,7 +27,7 @@
 [<span class="ansi31">DBG</span>] prefixed output!
 [<span class="ansi31">FTL</span>] prefixed output!
 [<span class="ansi35">SYS</span>] prefixed output!
-none prefixed output!
+<span class="ansi34">18:38:08 </span>none prefixed timestamped output!
 [<span class="ansi32">NFO</span>] <span class="ansi34">18:38:08 </span>timestamped prefixed output!
 [<span class="ansi33">WRN</span>] <span class="ansi34">18:38:08 </span>timestamped prefixed output!
 [<span class="ansi34">TRC</span>] <span class="ansi34">18:38:08 </span>timestamped prefixed output!
@@ -34,7 +35,6 @@ none prefixed output!
 [<span class="ansi31">DBG</span>] <span class="ansi34">18:38:08 </span>timestamped prefixed output!
 [<span class="ansi31">FTL</span>] <span class="ansi34">18:38:08 </span>timestamped prefixed output!
 [<span class="ansi35">SYS</span>] <span class="ansi34">18:38:08 </span>timestamped prefixed output!
-<span class="ansi34">18:38:08 </span>none prefixed timestamped output!
 </pre>
 </body>
 </div>
