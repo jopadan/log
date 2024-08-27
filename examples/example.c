@@ -30,7 +30,7 @@ int main(int argc, char** argv)
 		log_queue(log_level(i), "%X0", "timestamped prefixed output!");
 
 	/* queue last test log message and flush sinks */
-	log_flush(log_queue(NULL, NULL, "none prefixed timestamped output!"));
+	log_flush(log_queue(NULL, "%X0", "none prefixed timestamped output!"));
 
 	exit(EXIT_SUCCESS);
 }
