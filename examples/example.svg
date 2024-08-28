@@ -14,6 +14,7 @@
 .ansi33 { color: #aa5500; }
 .ansi34 { color: #0000aa; }
 .ansi35 { color: #E850A8; }
+.ansi36 { color: #00aaaa; }
 </style>
 </meta>
 </head>
