@@ -19,8 +19,6 @@
 </head>
 <body class="body_foreground body_background" style="font-size: normal;" >
 <pre class="ansi2html-content">
-<body class="body_foreground body_background" style="font-size: normal;" >
-<pre class="ansi2html-content">
 <span class="ansi32">example.c</span>:<span class="ansi35">19</span> <span class="ansi36">main(int argc, char** argv)</span> none prefixed output!
 [<span class="ansi32">NFO</span>] <span class="ansi32">example.c</span>:<span class="ansi35">17</span> <span class="ansi36">main(int argc, char** argv)</span> prefixed output!
 [<span class="ansi33">WRN</span>] <span class="ansi32">example.c</span>:<span class="ansi35">17</span> <span class="ansi36">main(int argc, char** argv)</span> prefixed output!
