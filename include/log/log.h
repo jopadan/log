@@ -55,20 +55,38 @@ FILE* log_file = NULL;
 const enum log_col log_level_color[8]  = { LOG_COLOR_GREEN, LOG_COLOR_YELLOW, LOG_COLOR_BLUE, LOG_COLOR_RED, LOG_COLOR_RED, LOG_COLOR_RED, LOG_COLOR_MAGENTA };
 const enum log_col log_timestamp_color = LOG_COLOR_BLUE;
 const char* log_level_string[8] = { "NFO", "WRN", "TRC", "ERR", "DBG", "FTL", "SYS" };
+char* log_tmp = NULL;
+
+extern inline void log_clean()
+{
+	if(log_tmp != NULL)
+	{
+		free(log_tmp);
+		log_tmp = NULL;
+	}
+}
+
+/* close file */
+extern inline void log_close()
+{
+	log_clean();
+	if(log_file != NULL)
+	{
+		fclose(log_file);
+		log_file = NULL;
+	}
+}
 
 /* color functions */
 extern inline char* log_color(uint8_t attr, uint8_t fg, uint8_t bg, const char* msg)
 {
-	static char* dst = NULL;
-
-	if(asprintf(&dst,"\x1b[%hhu;3%hhu;4%hhum%s%s", attr, fg, bg, msg, "\x1b[0m") == -1)
-		dst = NULL;
-	return dst;
+	if(asprintf(&log_tmp,"\x1b[%hhu;3%hhu;4%hhum%s%s", attr, fg, bg, msg, "\x1b[0m") == -1)
+		log_clean();
+	return log_tmp;
 }
 
 extern inline char* log_color_rgba(rgba8888 fg, rgba8888 bg, const char* msg)
 {
-	static char* dst = NULL;
 	uint8_t attr = 0;
 	switch(((fg[3] + bg[3]) / 2) / 64)
 	{
@@ -78,18 +96,17 @@ extern inline char* log_color_rgba(rgba8888 fg, rgba8888 bg, const char* msg)
 		case 2 : attr = 0; break;
 		default: attr = 0; break;
 	};
-	if(asprintf(&dst,"\x1b[%hhu;38:2:%hhu:%hhu:%hhu;48:2:%hhu:%hhu:%hhum%s%s ", attr, fg[0], fg[1], fg[2], bg[0], bg[1], bg[2], msg, "\x1b[0m") == -1)
-		dst = NULL;
-	return dst;
+	if(asprintf(&log_tmp,"\x1b[%hhu;38:2:%hhu:%hhu:%hhu;48:2:%hhu:%hhu:%hhum%s%s ", attr, fg[0], fg[1], fg[2], bg[0], bg[1], bg[2], msg, "\x1b[0m") == -1)
+		log_clean();
+	return log_tmp;
 }
 
 /* log level prefix generation */
 extern inline const char* log_level(enum log_lvl lvl)
 {
-	static char* dst = NULL;
-	if(asprintf(&dst, "[%s] ", log_colored ? log_color(0, log_level_color[lvl], LOG_COLOR_DEFAULT, log_level_string[lvl]) : log_level_string[lvl]) == -1)
-		dst = NULL;
-	return dst;
+	if(asprintf(&log_tmp, "[%s] ", log_colored ? log_color(0, log_level_color[lvl], LOG_COLOR_DEFAULT, log_level_string[lvl]) : log_level_string[lvl]) == -1)
+		log_clean();
+	return log_tmp;
 }
 
 /* log filename string determination using arguments */
@@ -97,16 +114,6 @@ extern inline char* log_getopt_ith(int argc, char** argv, int i)
 {
 	static char src[FILENAME_MAX] = { '\0' };
 	return argc == 1 ? strcat(strcpy(src, argv[0]), ".log") : strcpy(src, argv[i]);
-}
-
-/* close file */
-extern inline void log_close()
-{
-	if(log_file != NULL)
-	{
-		fclose(log_file);
-		log_file = NULL;
-	}
 }
 
 /* output log and empty queue */
