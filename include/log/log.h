@@ -44,16 +44,25 @@ typedef vec4ub rgba8888;
 #ifndef log_tty
 #define log_tty stderr
 #endif
-#define log_len_min 2048
+#define log_len_min 4096
 #ifndef log_len
 #define log_len log_len_min
 #endif
 
 bool  log_timestamp = true;
+bool  log_funcname = true;
+bool  log_filename = true;
+bool  log_lineno   = true;
 bool  log_colored = true;
 FILE* log_file = NULL;
+
 const enum log_col log_level_color[8]  = { LOG_COLOR_GREEN, LOG_COLOR_YELLOW, LOG_COLOR_BLUE, LOG_COLOR_RED, LOG_COLOR_RED, LOG_COLOR_RED, LOG_COLOR_MAGENTA };
-const enum log_col log_timestamp_color = LOG_COLOR_BLUE;
+
+enum log_col log_timestamp_color = LOG_COLOR_BLUE;
+enum log_col log_filename_color = LOG_COLOR_GREEN;
+enum log_col log_funcname_color = LOG_COLOR_CYAN;
+enum log_col log_lineno_color   = LOG_COLOR_MAGENTA;
+
 const char* log_level_string[8] = { "NFO", "WRN", "TRC", "ERR", "DBG", "FTL", "SYS" };
 char* log_tmp = NULL;
 
@@ -132,24 +141,70 @@ extern inline char* log_flush(char* buf)
 }
 
 /* queue log non/prefixed entries  */
-extern inline char* log_queue(const char* pre, const char* time_format, const char* msg)
+extern inline char* log_queue(const char* pre, const char* time_format, const char* filename, const char* funcname, const ssize_t lineno, const char* msg)
 {
-	static char buf[MAX(log_len, log_len_min)] = {'\0'};
+        static char buf[MAX(log_len, log_len_min)] = {'\0'};
 
-	if(msg != NULL)
-	{
-		if(pre != NULL)
-			strcat(buf, pre);
+        if(msg != NULL)
+        {
+                if(pre != NULL)
+                        strcat(buf, pre);
 
-		if(log_timestamp && time_format != NULL)
+                if(log_timestamp && time_format != NULL)
+                {
+                        time_t t = time(NULL);
+                        struct tm* tm = localtime(&t);
+                        char tme[32];
+                        strftime(tme, sizeof(tme), time_format, tm);
+                        tme[strlen(tme) - 1] = ' ';
+                        const char* color = log_colored ? log_color(0, log_timestamp_color, 9, tme) : tme;
+                        strcat(buf, color);
+                }
+
+
+                if(log_filename && filename != NULL)
+                {
+                        if(asprintf(&log_tmp, "%s", log_colored ? log_color(0, log_filename_color, LOG_COLOR_DEFAULT, filename) : filename) == -1)
+                                log_clean();
+
+                        if((strlen(buf) + strlen(log_tmp) + 2) >= MAX(log_len, log_len_min))
+                                log_flush(buf);
+
+                        strcat(buf, log_tmp);
+                }
+
+                if(log_lineno)
+                {
+                        char line[32] = { '\0' };
+                        snprintf(line, 32, "%zu", lineno);
+
+                        if(log_colored)
+                        {
+                                if(snprintf(line, 32, ":%s", log_color(0, log_lineno_color, LOG_COLOR_DEFAULT, line)) == -1)
+                                        log_clean();
+                        }
+                        if((strlen(buf) + strlen(line) + 2) >= MAX(log_len, log_len_min))
+                                log_flush(buf);
+
+                        strcat(buf, line);
+                }
+                strcat(buf, " ");
+
+                if(log_funcname && funcname != NULL)
+                {
+                        if(asprintf(&log_tmp, "%s ", log_colored ? log_color(0, log_funcname_color, LOG_COLOR_DEFAULT, funcname) : funcname) == -1)
+				log_clean();
+		}
+
+		if(log_funcname && funcname != NULL)
 		{
-			time_t t = time(NULL);
-			struct tm* tm = localtime(&t);
-			char tme[32];
-			strftime(tme, sizeof(tme), time_format, tm);
-			tme[strlen(tme) - 1] = ' ';
-			const char* color = log_colored ? log_color(0, log_timestamp_color, 9, tme) : tme;
-			strcat(buf, color);
+			if(asprintf(&log_tmp, "%s ", log_colored ? log_color(0, log_funcname_color, LOG_COLOR_DEFAULT, funcname) : funcname) == -1)
+				log_clean();
+
+			if((strlen(buf) + strlen(log_tmp) + 2) >= MAX(log_len, log_len_min))
+				log_flush(buf);
+
+			strcat(buf, log_tmp);
 		}
 
 		if(strlen(buf) + strlen(msg) + 2 >= MAX(log_len, log_len_min))

@@ -15,39 +15,39 @@ Investigate the `examples/example.c` example and `log.h`
 
 ```c
 /* set log length and sink */
-#define log_len 2048
+#define log_len 4096
 #define log_tty stdout
 #include <log/log.h>
 
 int main(int argc, char** argv)
 {
-        /* use default/optional log_file and close it at exit */
-        log_file = fopen(log_getopt_ith(argc, argv, 1), "w");
-        atexit(log_close);
+	/* use default/optional log_file and close it at exit */
+	log_file = fopen(log_getopt_ith(argc, argv, 1), "w");
+	atexit(log_close);
 
-        /* disable timestamping */
-        log_timestamp = false;
+	/* disable timestamping */
+	log_timestamp = false;
 
-        /* queue test log messages */
-        for(size_t i = 0; i < 7; i++)
-                log_queue(log_level(i), NULL, "prefixed output!");
+	/* queue test log messages */
+	for(size_t i = 0; i < 7; i++)
+		log_queue(log_level(i), NULL, "example.c", "main(int argc, char** argv)", 17, "prefixed output!");
+		
+	log_queue(NULL, NULL, "example.c", "main(int argc, char** argv)", 19, "none prefixed output!");
 
-        log_queue(NULL, NULL, "none prefixed output!");
+	/* set tty sink from stderr default to stdout */
+	#undef log_tty
+	#define log_tty stderr
 
-        /* set tty sink from stderr default to stdout */
-        #undef log_tty
-        #define log_tty stderr
+	/* enable timestamping */
+	log_timestamp = true;
 
-        /* enable timestamping */
-        log_timestamp = true;
+	/* queue test log messages */
+	for(size_t i = 0; i < 7; i++)
+		log_queue(log_level(i), "%X0", "example.c", "main(int argc, char** argv)", 30, "timestamped prefixed output!");
 
-        /* queue test log messages */
-        for(size_t i = 0; i < 7; i++)
-                log_queue(log_level(i), "%X0", "timestamped prefixed output!");
+	/* queue last test log message and flush sinks */
+	log_flush(log_queue(NULL, "%X0", "example.c", "main(int argc, char** argv)", 33, "none prefixed timestamped output!"));
 
-        /* queue last test log message and flush sinks */
-        log_flush(log_queue(NULL, "%X0", "none prefixed timestamped output!"));
-
-        exit(EXIT_SUCCESS);
+	exit(EXIT_SUCCESS);
 }
 ```
