@@ -15,7 +15,7 @@ Investigate the `examples/example.c` example and `log.h`
 
 ```c
 /* set log length and sink */
-#define log_len 4096
+#define LOG_LEN 4096
 #define LOG_TTY stdout
 #include <log/log.h>
 
