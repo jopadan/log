@@ -49,52 +49,52 @@ typedef vec4ub rgba8888;
 #define log_len log_len_min
 #endif
 
-bool  log_timestamp = true;
-bool  log_funcname = true;
-bool  log_filename = true;
-bool  log_lineno   = true;
-bool  log_colored = true;
-FILE* log_file = NULL;
+bool  LOG_TIMESTAMP = true;
+bool  LOG_FUNCNAME = true;
+bool  LOG_FILENAME = true;
+bool  LOG_LINENO   = true;
+bool  LOG_COLORED = true;
+FILE* LOG_FILE = NULL;
 
-const enum log_col log_level_color[8]  = { LOG_COLOR_GREEN, LOG_COLOR_YELLOW, LOG_COLOR_BLUE, LOG_COLOR_RED, LOG_COLOR_RED, LOG_COLOR_RED, LOG_COLOR_MAGENTA };
+const enum log_col LOG_LEVEL_COLOR[8]  = { LOG_COLOR_GREEN, LOG_COLOR_YELLOW, LOG_COLOR_BLUE, LOG_COLOR_RED, LOG_COLOR_RED, LOG_COLOR_RED, LOG_COLOR_MAGENTA };
 
-enum log_col log_timestamp_color = LOG_COLOR_BLUE;
-enum log_col log_filename_color = LOG_COLOR_GREEN;
-enum log_col log_funcname_color = LOG_COLOR_CYAN;
-enum log_col log_lineno_color   = LOG_COLOR_MAGENTA;
+enum log_col LOG_TIMESTAMP_COLOR = LOG_COLOR_BLUE;
+enum log_col LOG_FILENAME_COLOR = LOG_COLOR_GREEN;
+enum log_col LOG_FUNCNAME_COLOR = LOG_COLOR_CYAN;
+enum log_col LOG_LINENO_COLOR   = LOG_COLOR_MAGENTA;
 
-const char* log_level_string[8] = { "NFO", "WRN", "TRC", "ERR", "DBG", "FTL", "SYS" };
-char* log_tmp = NULL;
+const char* LOG_LEVEL_STRING[8] = { "NFO", "WRN", "TRC", "ERR", "DBG", "FTL", "SYS" };
+char* LOG_TMP = NULL;
 
-extern inline void log_clean()
+extern inline void LOG_CLEAN()
 {
-	if(log_tmp != NULL)
+	if(LOG_TMP != NULL)
 	{
-		free(log_tmp);
-		log_tmp = NULL;
+		free(LOG_TMP);
+		LOG_TMP = NULL;
 	}
 }
 
 /* close file */
-extern inline void log_close()
+extern inline void LOG_CLOSE()
 {
-	log_clean();
-	if(log_file != NULL)
+	LOG_CLEAN();
+	if(LOG_FILE != NULL)
 	{
-		fclose(log_file);
-		log_file = NULL;
+		fclose(LOG_FILE);
+		LOG_FILE = NULL;
 	}
 }
 
 /* color functions */
-extern inline char* log_color(uint8_t attr, uint8_t fg, uint8_t bg, const char* msg)
+extern inline char* LOG_COLOR(uint8_t attr, uint8_t fg, uint8_t bg, const char* msg)
 {
-	if(asprintf(&log_tmp,"\x1b[%hhu;3%hhu;4%hhum%s%s", attr, fg, bg, msg, "\x1b[0m") == -1)
-		log_clean();
-	return log_tmp;
+	if(asprintf(&LOG_TMP,"\x1b[%hhu;3%hhu;4%hhum%s%s", attr, fg, bg, msg, "\x1b[0m") == -1)
+		LOG_CLEAN();
+	return LOG_TMP;
 }
 
-extern inline char* log_color_rgba(rgba8888 fg, rgba8888 bg, const char* msg)
+extern inline char* LOG_COLOR_rgba(rgba8888 fg, rgba8888 bg, const char* msg)
 {
 	uint8_t attr = 0;
 	switch(((fg[3] + bg[3]) / 2) / 64)
@@ -105,33 +105,33 @@ extern inline char* log_color_rgba(rgba8888 fg, rgba8888 bg, const char* msg)
 		case 2 : attr = 0; break;
 		default: attr = 0; break;
 	};
-	if(asprintf(&log_tmp,"\x1b[%hhu;38:2:%hhu:%hhu:%hhu;48:2:%hhu:%hhu:%hhum%s%s ", attr, fg[0], fg[1], fg[2], bg[0], bg[1], bg[2], msg, "\x1b[0m") == -1)
-		log_clean();
-	return log_tmp;
+	if(asprintf(&LOG_TMP,"\x1b[%hhu;38:2:%hhu:%hhu:%hhu;48:2:%hhu:%hhu:%hhum%s%s ", attr, fg[0], fg[1], fg[2], bg[0], bg[1], bg[2], msg, "\x1b[0m") == -1)
+		LOG_CLEAN();
+	return LOG_TMP;
 }
 
 /* log level prefix generation */
-extern inline const char* log_level(enum log_lvl lvl)
+extern inline const char* LOG_LEVEL(enum log_lvl lvl)
 {
-	if(asprintf(&log_tmp, "[%s] ", log_colored ? log_color(0, log_level_color[lvl], LOG_COLOR_DEFAULT, log_level_string[lvl]) : log_level_string[lvl]) == -1)
-		log_clean();
-	return log_tmp;
+	if(asprintf(&LOG_TMP, "[%s] ", LOG_COLORED ? LOG_COLOR(0, LOG_LEVEL_COLOR[lvl], LOG_COLOR_DEFAULT, LOG_LEVEL_STRING[lvl]) : LOG_LEVEL_STRING[lvl]) == -1)
+		LOG_CLEAN();
+	return LOG_TMP;
 }
 
 /* log filename string determination using arguments */
-extern inline char* log_getopt_ith(int argc, char** argv, int i)
+extern inline char* LOG_GETOPT_ITH(int argc, char** argv, int i)
 {
 	static char src[FILENAME_MAX] = { '\0' };
 	return argc == 1 ? strcat(strcpy(src, argv[0]), ".log") : strcpy(src, argv[i]);
 }
 
 /* output log and empty queue */
-extern inline char* log_flush(char* buf)
+extern inline char* LOG_FLUSH(char* buf)
 {
 	if(buf[0] != '\0')
 	{
-		if(log_file != NULL)
-			fputs(buf, log_file);
+		if(LOG_FILE != NULL)
+			fputs(buf, LOG_FILE);
 		if(log_tty != NULL)
 			fputs(buf, log_tty);
 		buf[0] = '\0';
@@ -141,7 +141,7 @@ extern inline char* log_flush(char* buf)
 }
 
 /* queue log non/prefixed entries  */
-extern inline char* log_queue(const char* pre, const char* time_format, const char* filename, const char* funcname, const ssize_t lineno, const char* msg)
+extern inline char* LOG_QUEUE(const char* pre, const char* time_format, const char* filename, const char* funcname, const ssize_t lineno, const char* msg)
 {
         static char buf[MAX(log_len, log_len_min)] = {'\0'};
 
@@ -150,65 +150,65 @@ extern inline char* log_queue(const char* pre, const char* time_format, const ch
                 if(pre != NULL)
                         strcat(buf, pre);
 
-                if(log_timestamp && time_format != NULL)
+                if(LOG_TIMESTAMP && time_format != NULL)
                 {
                         time_t t = time(NULL);
                         struct tm* tm = localtime(&t);
                         char tme[32];
                         strftime(tme, sizeof(tme), time_format, tm);
                         tme[strlen(tme) - 1] = ' ';
-                        const char* color = log_colored ? log_color(0, log_timestamp_color, 9, tme) : tme;
+                        const char* color = LOG_COLORED ? LOG_COLOR(0, LOG_TIMESTAMP_COLOR, 9, tme) : tme;
                         strcat(buf, color);
                 }
 
 
-                if(log_filename && filename != NULL)
+                if(LOG_FILENAME && filename != NULL)
                 {
-                        if(asprintf(&log_tmp, "%s", log_colored ? log_color(0, log_filename_color, LOG_COLOR_DEFAULT, filename) : filename) == -1)
-                                log_clean();
+                        if(asprintf(&LOG_TMP, "%s", LOG_COLORED ? LOG_COLOR(0, LOG_FILENAME_COLOR, LOG_COLOR_DEFAULT, filename) : filename) == -1)
+                                LOG_CLEAN();
 
-                        if((strlen(buf) + strlen(log_tmp) + 2) >= MAX(log_len, log_len_min))
-                                log_flush(buf);
+                        if((strlen(buf) + strlen(LOG_TMP) + 2) >= MAX(log_len, log_len_min))
+                                LOG_FLUSH(buf);
 
-                        strcat(buf, log_tmp);
+                        strcat(buf, LOG_TMP);
                 }
 
-                if(log_lineno)
+                if(LOG_LINENO)
                 {
                         char line[32] = { '\0' };
                         snprintf(line, 32, "%zu", lineno);
 
-                        if(log_colored)
+                        if(LOG_COLORED)
                         {
-                                if(snprintf(line, 32, ":%s", log_color(0, log_lineno_color, LOG_COLOR_DEFAULT, line)) == -1)
-                                        log_clean();
+                                if(snprintf(line, 32, ":%s", LOG_COLOR(0, LOG_LINENO_COLOR, LOG_COLOR_DEFAULT, line)) == -1)
+                                        LOG_CLEAN();
                         }
                         if((strlen(buf) + strlen(line) + 2) >= MAX(log_len, log_len_min))
-                                log_flush(buf);
+                                LOG_FLUSH(buf);
 
                         strcat(buf, line);
                 }
                 strcat(buf, " ");
 
-                if(log_funcname && funcname != NULL)
+                if(LOG_FUNCNAME && funcname != NULL)
                 {
-                        if(asprintf(&log_tmp, "%s ", log_colored ? log_color(0, log_funcname_color, LOG_COLOR_DEFAULT, funcname) : funcname) == -1)
-				log_clean();
+                        if(asprintf(&LOG_TMP, "%s ", LOG_COLORED ? LOG_COLOR(0, LOG_FUNCNAME_COLOR, LOG_COLOR_DEFAULT, funcname) : funcname) == -1)
+				LOG_CLEAN();
 		}
 
-		if(log_funcname && funcname != NULL)
+		if(LOG_FUNCNAME && funcname != NULL)
 		{
-			if(asprintf(&log_tmp, "%s ", log_colored ? log_color(0, log_funcname_color, LOG_COLOR_DEFAULT, funcname) : funcname) == -1)
-				log_clean();
+			if(asprintf(&LOG_TMP, "%s ", LOG_COLORED ? LOG_COLOR(0, LOG_FUNCNAME_COLOR, LOG_COLOR_DEFAULT, funcname) : funcname) == -1)
+				LOG_CLEAN();
 
-			if((strlen(buf) + strlen(log_tmp) + 2) >= MAX(log_len, log_len_min))
-				log_flush(buf);
+			if((strlen(buf) + strlen(LOG_TMP) + 2) >= MAX(log_len, log_len_min))
+				LOG_FLUSH(buf);
 
-			strcat(buf, log_tmp);
+			strcat(buf, LOG_TMP);
 		}
 
 		if(strlen(buf) + strlen(msg) + 2 >= MAX(log_len, log_len_min))
-			log_flush(buf);
+			LOG_FLUSH(buf);
 
 		strcat(buf, msg);
 		strcat(buf, "\n\0");

@@ -1,36 +1,36 @@
 /* set log length and sink */
 #define log_len 4096
-#define log_tty stdout
+#define LOG_TTY stdout
 #include <log/log.h>
 
 int main(int argc, char** argv)
 {
-	/* use default/optional log_file and close it at exit */
-	log_file = fopen(log_getopt_ith(argc, argv, 1), "w");
-	atexit(log_close);
+	/* use default/optional LOG_FILE and close it at exit */
+	LOG_FILE = fopen(LOG_GETOPT_ITH(argc, argv, 1), "w");
+	atexit(LOG_CLOSE);
 
 	/* disable timestamping */
-	log_timestamp = false;
+	LOG_TIMESTAMP = false;
 
 	/* queue test log messages */
 	for(size_t i = 0; i < 7; i++)
-		log_queue(log_level(i), NULL, "example.c", "main(int argc, char** argv)", 17, "Hello OwlFroggers World!");
+		LOG_QUEUE(LOG_LEVEL(i), NULL, "example.c", "main(int argc, char** argv)", 17, "Hello OwlFroggers World!");
 		
-	log_queue(NULL, NULL, "example.c", "main(int argc, char** argv)", 19, "Hello OwlFroggers World!");
+	LOG_QUEUE(NULL, NULL, "example.c", "main(int argc, char** argv)", 19, "Hello OwlFroggers World!");
 
 	/* set tty sink from stderr default to stdout */
-	#undef log_tty
-	#define log_tty stderr
+	#undef LOG_TTY
+	#define LOG_TTY stderr
 
 	/* enable timestamping */
-	log_timestamp = true;
+	LOG_TIMESTAMP = true;
 
 	/* queue test log messages */
 	for(size_t i = 0; i < 7; i++)
-		log_queue(log_level(i), "%X0", "example.c", "main(int argc, char** argv)", 30, "Hello OwlFroggers World!");
+		LOG_QUEUE(LOG_LEVEL(i), "%X0", "example.c", "main(int argc, char** argv)", 30, "Hello OwlFroggers World!");
 
 	/* queue last test log message and flush sinks */
-	log_flush(log_queue(NULL, "%X0", "example.c", "main(int argc, char** argv)", 33, "Hello OwlFroggers World!"));
+	LOG_FLUSH(LOG_QUEUE(NULL, "%X0", "example.c", "main(int argc, char** argv)", 33, "Hello OwlFroggers World!"));
 
 	exit(EXIT_SUCCESS);
 }
