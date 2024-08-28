@@ -1,10 +1,10 @@
-<svg fill="none" width="100%" height="100%" viewBox="0 0 600 340" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+<svg fill="none" width="100%" height="100%" viewBox="0 0 600 380" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
 <foreignObject width="100%" height="100%">
 <div xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <style type="text/css">
-.ansi2html-content { display: inline; width: 100%; height: 340px; white-space: pre-wrap; word-wrap: break-word; }
+.ansi2html-content { display: inline; width: 100%; height: 380px; white-space: pre-wrap; word-wrap: break-word; }
 .body_foreground { color: #AAAAAA; }
 .body_background { background-color: #000000; }
 .inv_foreground { color: #000000; }
@@ -20,7 +20,6 @@
 </head>
 <body class="body_foreground body_background" style="font-size: normal;" >
 <pre class="ansi2html-content">
-<span class="ansi32">example.c</span>:<span class="ansi35">19</span> <span class="ansi36">main(int argc, char** argv)</span> none prefixed output!
 [<span class="ansi32">NFO</span>] <span class="ansi32">example.c</span>:<span class="ansi35">17</span> <span class="ansi36">main(int argc, char** argv)</span> prefixed output!
 [<span class="ansi33">WRN</span>] <span class="ansi32">example.c</span>:<span class="ansi35">17</span> <span class="ansi36">main(int argc, char** argv)</span> prefixed output!
 [<span class="ansi34">TRC</span>] <span class="ansi32">example.c</span>:<span class="ansi35">17</span> <span class="ansi36">main(int argc, char** argv)</span> prefixed output!
@@ -28,14 +27,15 @@
 [<span class="ansi31">DBG</span>] <span class="ansi32">example.c</span>:<span class="ansi35">17</span> <span class="ansi36">main(int argc, char** argv)</span> prefixed output!
 [<span class="ansi31">FTL</span>] <span class="ansi32">example.c</span>:<span class="ansi35">17</span> <span class="ansi36">main(int argc, char** argv)</span> prefixed output!
 [<span class="ansi35">SYS</span>] <span class="ansi32">example.c</span>:<span class="ansi35">17</span> <span class="ansi36">main(int argc, char** argv)</span> prefixed output!
-<span class="ansi34">16:45:17 </span><span class="ansi32">example.c</span>:<span class="ansi35">33</span> <span class="ansi36">main(int argc, char** argv)</span> none prefixed timestamped output!
-[<span class="ansi32">NFO</span>] <span class="ansi34">16:45:17 </span><span class="ansi32">example.c</span>:<span class="ansi35">30</span> <span class="ansi36">main(int argc, char** argv)</span> timestamped prefixed output!
-[<span class="ansi33">WRN</span>] <span class="ansi34">16:45:17 </span><span class="ansi32">example.c</span>:<span class="ansi35">30</span> <span class="ansi36">main(int argc, char** argv)</span> timestamped prefixed output!
-[<span class="ansi34">TRC</span>] <span class="ansi34">16:45:17 </span><span class="ansi32">example.c</span>:<span class="ansi35">30</span> <span class="ansi36">main(int argc, char** argv)</span> timestamped prefixed output!
-[<span class="ansi31">ERR</span>] <span class="ansi34">16:45:17 </span><span class="ansi32">example.c</span>:<span class="ansi35">30</span> <span class="ansi36">main(int argc, char** argv)</span> timestamped prefixed output!
-[<span class="ansi31">DBG</span>] <span class="ansi34">16:45:17 </span><span class="ansi32">example.c</span>:<span class="ansi35">30</span> <span class="ansi36">main(int argc, char** argv)</span> timestamped prefixed output!
-[<span class="ansi31">FTL</span>] <span class="ansi34">16:45:17 </span><span class="ansi32">example.c</span>:<span class="ansi35">30</span> <span class="ansi36">main(int argc, char** argv)</span> timestamped prefixed output!
-[<span class="ansi35">SYS</span>] <span class="ansi34">16:45:17 </span><span class="ansi32">example.c</span>:<span class="ansi35">30</span> <span class="ansi36">main(int argc, char** argv)</span> timestamped prefixed output!
+<span class="ansi32">example.c</span>:<span class="ansi35">19</span> <span class="ansi36">main(int argc, char** argv)</span> none prefixed output!
+[<span class="ansi32">NFO</span>] <span class="ansi34">16:59:35 </span><span class="ansi32">example.c</span>:<span class="ansi35">30</span> <span class="ansi36">main(int argc, char** argv)</span> timestamped prefixed output!
+[<span class="ansi33">WRN</span>] <span class="ansi34">16:59:35 </span><span class="ansi32">example.c</span>:<span class="ansi35">30</span> <span class="ansi36">main(int argc, char** argv)</span> timestamped prefixed output!
+[<span class="ansi34">TRC</span>] <span class="ansi34">16:59:35 </span><span class="ansi32">example.c</span>:<span class="ansi35">30</span> <span class="ansi36">main(int argc, char** argv)</span> timestamped prefixed output!
+[<span class="ansi31">ERR</span>] <span class="ansi34">16:59:35 </span><span class="ansi32">example.c</span>:<span class="ansi35">30</span> <span class="ansi36">main(int argc, char** argv)</span> timestamped prefixed output!
+[<span class="ansi31">DBG</span>] <span class="ansi34">16:59:35 </span><span class="ansi32">example.c</span>:<span class="ansi35">30</span> <span class="ansi36">main(int argc, char** argv)</span> timestamped prefixed output!
+[<span class="ansi31">FTL</span>] <span class="ansi34">16:59:35 </span><span class="ansi32">example.c</span>:<span class="ansi35">30</span> <span class="ansi36">main(int argc, char** argv)</span> timestamped prefixed output!
+[<span class="ansi35">SYS</span>] <span class="ansi34">16:59:35 </span><span class="ansi32">example.c</span>:<span class="ansi35">30</span> <span class="ansi36">main(int argc, char** argv)</span> timestamped prefixed output!
+<span class="ansi34">16:59:35 </span><span class="ansi32">example.c</span>:<span class="ansi35">33</span> <span class="ansi36">main(int argc, char** argv)</span> none prefixed timestamped output!
 </pre>
 </body>
 </div>

@@ -14,9 +14,9 @@ int main(int argc, char** argv)
 
 	/* queue test log messages */
 	for(size_t i = 0; i < 7; i++)
-		log_queue(log_level(i), NULL, "example.c", "main(int argc, char** argv)", 17, "prefixed output!");
+		log_queue(log_level(i), NULL, "example.c", "main(int argc, char** argv)", 17, "Hello OwlFroggers World!");
 		
-	log_queue(NULL, NULL, "example.c", "main(int argc, char** argv)", 19, "none prefixed output!");
+	log_queue(NULL, NULL, "example.c", "main(int argc, char** argv)", 19, "Hello OwlFroggers World!");
 
 	/* set tty sink from stderr default to stdout */
 	#undef log_tty
@@ -27,10 +27,10 @@ int main(int argc, char** argv)
 
 	/* queue test log messages */
 	for(size_t i = 0; i < 7; i++)
-		log_queue(log_level(i), "%X0", "example.c", "main(int argc, char** argv)", 30, "timestamped prefixed output!");
+		log_queue(log_level(i), "%X0", "example.c", "main(int argc, char** argv)", 30, "Hello OwlFroggers World!");
 
 	/* queue last test log message and flush sinks */
-	log_flush(log_queue(NULL, "%X0", "example.c", "main(int argc, char** argv)", 33, "none prefixed timestamped output!"));
+	log_flush(log_queue(NULL, "%X0", "example.c", "main(int argc, char** argv)", 33, "Hello OwlFroggers World!"));
 
 	exit(EXIT_SUCCESS);
 }
