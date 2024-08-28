@@ -41,12 +41,12 @@ typedef vec4ub rgba8888;
 
 
 /* default config settings */
-#ifndef log_tty
-#define log_tty stderr
+#ifndef LOG_TTY
+#define LOG_TTY stderr
 #endif
-#define log_len_min 4096
-#ifndef log_len
-#define log_len log_len_min
+#define LOG_LEN_min 4096
+#ifndef LOG_LEN
+#define LOG_LEN LOG_LEN_min
 #endif
 
 bool  LOG_TIMESTAMP = true;
@@ -132,8 +132,8 @@ extern inline char* LOG_FLUSH(char* buf)
 	{
 		if(LOG_FILE != NULL)
 			fputs(buf, LOG_FILE);
-		if(log_tty != NULL)
-			fputs(buf, log_tty);
+		if(LOG_TTY != NULL)
+			fputs(buf, LOG_TTY);
 		buf[0] = '\0';
 		buf[1] = '\0';
 	}
@@ -143,7 +143,7 @@ extern inline char* LOG_FLUSH(char* buf)
 /* queue log non/prefixed entries  */
 extern inline char* LOG_QUEUE(const char* pre, const char* time_format, const char* filename, const char* funcname, const ssize_t lineno, const char* msg)
 {
-        static char buf[MAX(log_len, log_len_min)] = {'\0'};
+        static char buf[MAX(LOG_LEN, LOG_LEN_min)] = {'\0'};
 
         if(msg != NULL)
         {
@@ -167,7 +167,7 @@ extern inline char* LOG_QUEUE(const char* pre, const char* time_format, const ch
                         if(asprintf(&LOG_TMP, "%s", LOG_COLORED ? LOG_COLOR(0, LOG_FILENAME_COLOR, LOG_COLOR_DEFAULT, filename) : filename) == -1)
                                 LOG_CLEAN();
 
-                        if((strlen(buf) + strlen(LOG_TMP) + 2) >= MAX(log_len, log_len_min))
+                        if((strlen(buf) + strlen(LOG_TMP) + 2) >= MAX(LOG_LEN, LOG_LEN_min))
                                 LOG_FLUSH(buf);
 
                         strcat(buf, LOG_TMP);
@@ -183,7 +183,7 @@ extern inline char* LOG_QUEUE(const char* pre, const char* time_format, const ch
                                 if(snprintf(line, 32, ":%s", LOG_COLOR(0, LOG_LINENO_COLOR, LOG_COLOR_DEFAULT, line)) == -1)
                                         LOG_CLEAN();
                         }
-                        if((strlen(buf) + strlen(line) + 2) >= MAX(log_len, log_len_min))
+                        if((strlen(buf) + strlen(line) + 2) >= MAX(LOG_LEN, LOG_LEN_min))
                                 LOG_FLUSH(buf);
 
                         strcat(buf, line);
@@ -201,13 +201,13 @@ extern inline char* LOG_QUEUE(const char* pre, const char* time_format, const ch
 			if(asprintf(&LOG_TMP, "%s ", LOG_COLORED ? LOG_COLOR(0, LOG_FUNCNAME_COLOR, LOG_COLOR_DEFAULT, funcname) : funcname) == -1)
 				LOG_CLEAN();
 
-			if((strlen(buf) + strlen(LOG_TMP) + 2) >= MAX(log_len, log_len_min))
+			if((strlen(buf) + strlen(LOG_TMP) + 2) >= MAX(LOG_LEN, LOG_LEN_min))
 				LOG_FLUSH(buf);
 
 			strcat(buf, LOG_TMP);
 		}
 
-		if(strlen(buf) + strlen(msg) + 2 >= MAX(log_len, log_len_min))
+		if(strlen(buf) + strlen(msg) + 2 >= MAX(LOG_LEN, LOG_LEN_min))
 			LOG_FLUSH(buf);
 
 		strcat(buf, msg);
