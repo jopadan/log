@@ -14,40 +14,32 @@ Run `cmake --install-prefix=/usr . && make install` to build and install
 Investigate the `examples/example.c` example and `log.h`
 
 ```c
-/* set log length and sink */
-#define LOG_LEN 4096
-#define LOG_TTY stdout
-#include <log/log.h>
+#ifndef LOG_TTY
+#define LOG_TTY stderr
+#endif
+#define LOG_LEN_MIN 4096
+#ifndef LOG_LEN
+#define LOG_LEN LOG_LEN_MIN
+#endif
+bool  LOG_TIMESTAMP                    = true;
+bool  LOG_FUNCNAME                     = true;
+bool  LOG_FILENAME                     = true;
+bool  LOG_LINENO                       = true;
+bool  LOG_COLORED                      = true;
+FILE* LOG_FILE                         = NULL;
+const enum log_col LOG_LEVEL_COLOR[8]  = { LOG_COLOR_GREEN, LOG_COLOR_YELLOW, LOG_COLOR_BLUE, LOG_COLOR_RED, LOG_COLOR_RED, LOG_COLOR_RED, LOG_COLOR_MAGENTA };
+enum log_col LOG_TIMESTAMP_COLOR       = LOG_COLOR_BLUE;
+enum log_col LOG_FILENAME_COLOR        = LOG_COLOR_GREEN;
+enum log_col LOG_FUNCNAME_COLOR        = LOG_COLOR_CYAN;
+enum log_col LOG_LINENO_COLOR          = LOG_COLOR_MAGENTA;
+char* LOG_LEVEL_STRING[8]              = { "NFO", "WRN", "TRC", "ERR", "DBG", "FTL", "SYS" };
 
-int main(int argc, char** argv)
-{
-	/* use default/optional LOG_FILE and close it at exit */
-	LOG_FILE = fopen(LOG_GETOPT_ITH(argc, argv, 1), "w");
-	atexit(LOG_CLOSE);
-
-	/* disable timestamping */
-	LOG_TIMESTAMP = false;
-
-	/* queue test log messages */
-	for(size_t i = 0; i < 7; i++)
-		LOG_QUEUE(LOG_LEVEL(i), NULL, "example.c", "main(int argc, char** argv)", 17, "Hello OwlFroggers World!");
-		
-	LOG_QUEUE(NULL, NULL, "example.c", "main(int argc, char** argv)", 19, "Hello OwlFroggers World!");
-
-	/* set tty sink from stderr default to stdout */
-	#undef LOG_TTY
-	#define LOG_TTY stderr
-
-	/* enable timestamping */
-	LOG_TIMESTAMP = true;
-
-	/* queue test log messages */
-	for(size_t i = 0; i < 7; i++)
-		LOG_QUEUE(LOG_LEVEL(i), "%X0", "example.c", "main(int argc, char** argv)", 30, "Hello OwlFroggers World!");
-
-	/* queue last test log message and flush sinks */
-	LOG_FLUSH(LOG_QUEUE(NULL, "%X0", "example.c", "main(int argc, char** argv)", 33, "Hello OwlFroggers World!"));
-
-	exit(EXIT_SUCCESS);
-}
+extern inline void LOG_CLEAN();
+extern inline void LOG_CLOSE();
+extern inline char* LOG_COLOR(uint8_t attr, uint8_t fg, uint8_t bg, const char* msg);
+extern inline char* LOG_COLOR_RGBA(rgba8888 fg, rgba8888 bg, const char* msg);
+extern inline const char* LOG_LEVEL(enum log_lvl lvl);
+extern inline char* LOG_GETOPT_ITH(int argc, char** argv, int i);
+extern inline char* LOG_QUEUE(const char* pre, const char* time_format, const char* filename, const char* funcname, const ssize_t lineno, const char* msg);
+extern inline char* LOG_FLUSH(char* buf);
 ```

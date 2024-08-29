@@ -44,27 +44,27 @@ typedef vec4ub rgba8888;
 #ifndef LOG_TTY
 #define LOG_TTY stderr
 #endif
-#define LOG_LEN_min 4096
+#define LOG_LEN_MIN 4096
 #ifndef LOG_LEN
-#define LOG_LEN LOG_LEN_min
+#define LOG_LEN LOG_LEN_MIN
 #endif
 
-bool  LOG_TIMESTAMP = true;
-bool  LOG_FUNCNAME = true;
-bool  LOG_FILENAME = true;
-bool  LOG_LINENO   = true;
-bool  LOG_COLORED = true;
-FILE* LOG_FILE = NULL;
+bool  LOG_TIMESTAMP                    = true;
+bool  LOG_FUNCNAME                     = true;
+bool  LOG_FILENAME                     = true;
+bool  LOG_LINENO                       = true;
+bool  LOG_COLORED                      = true;
+FILE* LOG_FILE                         = NULL;
 
 const enum log_col LOG_LEVEL_COLOR[8]  = { LOG_COLOR_GREEN, LOG_COLOR_YELLOW, LOG_COLOR_BLUE, LOG_COLOR_RED, LOG_COLOR_RED, LOG_COLOR_RED, LOG_COLOR_MAGENTA };
 
-enum log_col LOG_TIMESTAMP_COLOR = LOG_COLOR_BLUE;
-enum log_col LOG_FILENAME_COLOR = LOG_COLOR_GREEN;
-enum log_col LOG_FUNCNAME_COLOR = LOG_COLOR_CYAN;
-enum log_col LOG_LINENO_COLOR   = LOG_COLOR_MAGENTA;
+enum log_col LOG_TIMESTAMP_COLOR       = LOG_COLOR_BLUE;
+enum log_col LOG_FILENAME_COLOR        = LOG_COLOR_GREEN;
+enum log_col LOG_FUNCNAME_COLOR        = LOG_COLOR_CYAN;
+enum log_col LOG_LINENO_COLOR          = LOG_COLOR_MAGENTA;
 
-const char* LOG_LEVEL_STRING[8] = { "NFO", "WRN", "TRC", "ERR", "DBG", "FTL", "SYS" };
-char* LOG_TMP = NULL;
+char* LOG_LEVEL_STRING[8]              = { "NFO", "WRN", "TRC", "ERR", "DBG", "FTL", "SYS" };
+static char* LOG_TMP                   = NULL;
 
 extern inline void LOG_CLEAN()
 {
@@ -94,7 +94,7 @@ extern inline char* LOG_COLOR(uint8_t attr, uint8_t fg, uint8_t bg, const char* 
 	return LOG_TMP;
 }
 
-extern inline char* LOG_COLOR_rgba(rgba8888 fg, rgba8888 bg, const char* msg)
+extern inline char* LOG_COLOR_RGBA(rgba8888 fg, rgba8888 bg, const char* msg)
 {
 	uint8_t attr = 0;
 	switch(((fg[3] + bg[3]) / 2) / 64)
@@ -143,7 +143,7 @@ extern inline char* LOG_FLUSH(char* buf)
 /* queue log non/prefixed entries  */
 extern inline char* LOG_QUEUE(const char* pre, const char* time_format, const char* filename, const char* funcname, const ssize_t lineno, const char* msg)
 {
-        static char buf[MAX(LOG_LEN, LOG_LEN_min)] = {'\0'};
+        static char buf[MAX(LOG_LEN, LOG_LEN_MIN)] = {'\0'};
 
         if(msg != NULL)
         {
@@ -167,7 +167,7 @@ extern inline char* LOG_QUEUE(const char* pre, const char* time_format, const ch
                         if(asprintf(&LOG_TMP, "%s", LOG_COLORED ? LOG_COLOR(0, LOG_FILENAME_COLOR, LOG_COLOR_DEFAULT, filename) : filename) == -1)
                                 LOG_CLEAN();
 
-                        if((strlen(buf) + strlen(LOG_TMP) + 2) >= MAX(LOG_LEN, LOG_LEN_min))
+                        if((strlen(buf) + strlen(LOG_TMP) + 2) >= MAX(LOG_LEN, LOG_LEN_MIN))
                                 LOG_FLUSH(buf);
 
                         strcat(buf, LOG_TMP);
@@ -183,7 +183,7 @@ extern inline char* LOG_QUEUE(const char* pre, const char* time_format, const ch
                                 if(snprintf(line, 32, ":%s", LOG_COLOR(0, LOG_LINENO_COLOR, LOG_COLOR_DEFAULT, line)) == -1)
                                         LOG_CLEAN();
                         }
-                        if((strlen(buf) + strlen(line) + 2) >= MAX(LOG_LEN, LOG_LEN_min))
+                        if((strlen(buf) + strlen(line) + 2) >= MAX(LOG_LEN, LOG_LEN_MIN))
                                 LOG_FLUSH(buf);
 
                         strcat(buf, line);
@@ -201,13 +201,13 @@ extern inline char* LOG_QUEUE(const char* pre, const char* time_format, const ch
 			if(asprintf(&LOG_TMP, "%s ", LOG_COLORED ? LOG_COLOR(0, LOG_FUNCNAME_COLOR, LOG_COLOR_DEFAULT, funcname) : funcname) == -1)
 				LOG_CLEAN();
 
-			if((strlen(buf) + strlen(LOG_TMP) + 2) >= MAX(LOG_LEN, LOG_LEN_min))
+			if((strlen(buf) + strlen(LOG_TMP) + 2) >= MAX(LOG_LEN, LOG_LEN_MIN))
 				LOG_FLUSH(buf);
 
 			strcat(buf, LOG_TMP);
 		}
 
-		if(strlen(buf) + strlen(msg) + 2 >= MAX(LOG_LEN, LOG_LEN_min))
+		if(strlen(buf) + strlen(msg) + 2 >= MAX(LOG_LEN, LOG_LEN_MIN))
 			LOG_FLUSH(buf);
 
 		strcat(buf, msg);
