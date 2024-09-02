@@ -41,5 +41,6 @@ extern inline char* LOG_COLOR_RGBA(rgba8888 fg, rgba8888 bg, const char* msg);
 extern inline const char* LOG_LEVEL(enum log_lvl lvl);
 extern inline char* LOG_GETOPT_ITH(int argc, char** argv, int i);
 extern inline char* LOG_QUEUE(const char* pre, const char* time_format, const char* filename, const char* funcname, const ssize_t lineno, const char* msg);
+extern inline char* LOG_PUTS(const char* msg);
 extern inline char* LOG_FLUSH(char* buf);
 ```
