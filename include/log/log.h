@@ -144,13 +144,14 @@ extern inline char* LOG_FLUSH(char* buf)
 extern inline char* LOG_QUEUE(const char* pre, const char* time_format, const char* filename, const char* funcname, const ssize_t lineno, const char* msg)
 {
         static char buf[MAX(LOG_LEN, LOG_LEN_MIN)] = {'\0'};
+	bool change = false;
 
-        if(msg != NULL)
+        if(msg != NULL && (strlen(msg) != 0))
         {
-                if(pre != NULL)
+                if(pre != NULL && (strlen(pre) != 0))
                         strcat(buf, pre);
 
-                if(LOG_TIMESTAMP && time_format != NULL)
+                if(LOG_TIMESTAMP && time_format != NULL && (strlen(time_format) != 0))
                 {
                         time_t t = time(NULL);
                         struct tm* tm = localtime(&t);
@@ -159,10 +160,10 @@ extern inline char* LOG_QUEUE(const char* pre, const char* time_format, const ch
                         tme[strlen(tme) - 1] = ' ';
                         const char* color = LOG_COLORED ? LOG_COLOR(0, LOG_TIMESTAMP_COLOR, 9, tme) : tme;
                         strcat(buf, color);
+			change = true;
                 }
 
-
-                if(LOG_FILENAME && filename != NULL)
+                if(LOG_FILENAME && filename != NULL && (strlen(filename) != 0))
                 {
                         if(asprintf(&LOG_TMP, "%s", LOG_COLORED ? LOG_COLOR(0, LOG_FILENAME_COLOR, LOG_COLOR_DEFAULT, filename) : filename) == -1)
                                 LOG_CLEAN();
@@ -171,6 +172,7 @@ extern inline char* LOG_QUEUE(const char* pre, const char* time_format, const ch
                                 LOG_FLUSH(buf);
 
                         strcat(buf, LOG_TMP);
+			change = true;
                 }
 
                 if(LOG_LINENO)
@@ -187,16 +189,10 @@ extern inline char* LOG_QUEUE(const char* pre, const char* time_format, const ch
                                 LOG_FLUSH(buf);
 
                         strcat(buf, line);
+			change = true;
                 }
-                strcat(buf, " ");
 
-                if(LOG_FUNCNAME && funcname != NULL)
-                {
-                        if(asprintf(&LOG_TMP, "%s ", LOG_COLORED ? LOG_COLOR(0, LOG_FUNCNAME_COLOR, LOG_COLOR_DEFAULT, funcname) : funcname) == -1)
-				LOG_CLEAN();
-		}
-
-		if(LOG_FUNCNAME && funcname != NULL)
+		if(LOG_FUNCNAME && funcname != NULL && (strlen(funcname) != 0))
 		{
 			if(asprintf(&LOG_TMP, "%s ", LOG_COLORED ? LOG_COLOR(0, LOG_FUNCNAME_COLOR, LOG_COLOR_DEFAULT, funcname) : funcname) == -1)
 				LOG_CLEAN();
@@ -204,7 +200,11 @@ extern inline char* LOG_QUEUE(const char* pre, const char* time_format, const ch
 			if((strlen(buf) + strlen(LOG_TMP) + 2) >= MAX(LOG_LEN, LOG_LEN_MIN))
 				LOG_FLUSH(buf);
 
+			if(change)
+				strcat(buf, " ");
+
 			strcat(buf, LOG_TMP);
+			change = true;
 		}
 
 		if(strlen(buf) + strlen(msg) + 2 >= MAX(LOG_LEN, LOG_LEN_MIN))
@@ -216,3 +216,15 @@ extern inline char* LOG_QUEUE(const char* pre, const char* time_format, const ch
 	return buf;
 }
 
+extern inline char* LOG_PUTS(const char* msg)
+{
+	char* dst = NULL;
+	if(msg != NULL)
+	{
+		bool tmp = LOG_LINENO;
+		LOG_LINENO = false;
+		dst = LOG_QUEUE(NULL, NULL, NULL, NULL, 0, msg);
+		LOG_LINENO = tmp;
+	}
+	return dst;
+}

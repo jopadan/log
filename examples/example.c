@@ -29,6 +29,12 @@ int main(int argc, char** argv)
 	for(size_t i = 0; i < 7; i++)
 		LOG_QUEUE(LOG_LEVEL(i), "%X0", "example.c", "main(int argc, char** argv)", 30, "Hello OwlFroggers World!");
 
+	LOG_LINENO = false;
+	LOG_QUEUE(NULL, NULL, NULL, "main(int argc, char** argv)", 30, "Hello OwlFroggers World!");
+	LOG_LINENO = true;
+	/* queue simple string */
+	LOG_PUTS("Hello OwlFroggers World!");
+
 	/* queue last test log message and flush sinks */
 	LOG_FLUSH(LOG_QUEUE(NULL, "%X0", "example.c", "main(int argc, char** argv)", 33, "Hello OwlFroggers World!"));
 
