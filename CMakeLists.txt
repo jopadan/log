@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.5)
 project(log LANGUAGES C)
 
 set(PROJECT_VERSION 1.0)
