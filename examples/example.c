@@ -20,7 +20,7 @@ int main(int argc, char** argv)
 
 	/* set tty sink from stderr default to stdout */
 	#undef LOG_TTY
-	#define LOG_TTY stdoit
+	#define LOG_TTY stdout
 
 	/* enable timestamping */
 	LOG_TIMESTAMP = true;
